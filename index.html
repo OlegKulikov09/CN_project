@@ -1,13 +1,52 @@
-<video id="video" controls></video>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script>
-  if (Hls.isSupported()) {
-    var video = document.getElementById('video');
-    var hls = new Hls();
-    hls.loadSource('https://olegkulikov09.github.io/CN_project/hls_video/master.m3u8');
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      video.play();
-    });
-  }
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HLS Video Player</title>
+</head>
+<body>
+
+  <video id="video" controls style="width: 100%; max-width: 800px;"></video>
+  <br>
+  <label for="quality">Качество видео:</label>
+  <select id="quality"></select>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    const video = document.getElementById('video');
+    const qualitySelect = document.getElementById('quality');
+
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource('https://olegkulikov09.github.io/CN_project/hls_video/master.m3u8');
+      hls.attachMedia(video);
+
+      hls.on(Hls.Events.MANIFEST_PARSED, function () {
+        const levels = hls.levels;
+
+        levels.forEach((level, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.text = `${level.height}p`;
+          qualitySelect.appendChild(option);
+        });
+
+        const autoOption = document.createElement('option');
+        autoOption.value = -1;
+        autoOption.text = 'Авто';
+        qualitySelect.appendChild(autoOption);
+        qualitySelect.value = -1;
+
+        qualitySelect.addEventListener('change', function () {
+          hls.currentLevel = parseInt(this.value);
+        });
+
+        video.play();
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = 'https://olegkulikov09.github.io/CN_project/hls_video/master.m3u8';
+    }
+  </script>
+
+</body>
+</html>
