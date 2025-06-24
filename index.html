@@ -8,7 +8,7 @@
 
   <video id="video" controls style="width: 100%; max-width: 800px;"></video>
   <br>
-  <label for="quality">Качество видео:</label>
+  <label for="quality">Quality:</label>
   <select id="quality"></select>
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -33,7 +33,7 @@
 
         const autoOption = document.createElement('option');
         autoOption.value = -1;
-        autoOption.text = 'Авто';
+        autoOption.text = 'Auto';
         qualitySelect.appendChild(autoOption);
         qualitySelect.value = -1;
 
